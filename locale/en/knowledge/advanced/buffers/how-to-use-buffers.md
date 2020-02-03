@@ -13,7 +13,7 @@ layout: knowledge-post.hbs
 
 ## Why Buffers?
 
-Pure JavaScript, while great with unicode-encoded strings, does not handle straight binary data very well. This is fine on the browser, where most data is in the form of strings. However, Node.js servers have to also deal with TCP streams and reading and writing to the filesystem, both which make it necessary to deal with purely binary streams of data.
+Pure JavaScript, while great with unicode-encoded strings, does not handle straight binary data very well. This is fine on the browser, where most data is in the form of strings. However, Node.js servers have to also deal with TCP streams and reading and writing to the filesystem, both of which make it necessary to deal with purely binary streams of data.
 
 One way to handle this problem is to just use strings *anyway*, which is exactly what Node.js did at first. However, this approach is extremely problematic to work with; It's slow, makes you work with an API designed for strings and not binary data, and has a tendency to break in strange and mysterious ways.
 
@@ -62,7 +62,7 @@ This initializes the buffer to a binary encoding of the first string as specifie
 Given that there is already a buffer created:
 
 ```
-> var buffer = new Buffer(16);
+> var buffer = Buffer.alloc(16)
 ```
 
 we can start writing strings to it:
@@ -145,7 +145,7 @@ The unicode snowman is only one character, but takes 3 entire bytes to encode!
 This is the length of your buffer, and represents how much memory is allocated. It is not the same as the size of the buffer's contents, since a buffer may be half-filled. For example:
 
 ```
-> var buffer = new Buffer(16)
+> var buffer = Buffer.alloc(16)
 > buffer.write(snowman)
 3
 > buffer.length
@@ -159,8 +159,8 @@ In this example, the contents written to the buffer only consist of three groups
 `buffer.copy` allows one to copy the contents of one buffer onto another. The first argument is the target buffer on which to copy the contents of `buffer`, and the rest of the arguments allow for copying only a subsection of the source buffer to somewhere in the middle of the target buffer. For example:
 
 ```
-> var frosty = new Buffer(24)
-> var snowman = new Buffer("☃", "utf-8")
+> var frosty = Buffer.alloc(24)
+> var snowman = Buffer.from("☃", "utf-8")
 > frosty.write("Happy birthday! ", "utf-8")
 16
 > snowman.copy(frosty, 16)
